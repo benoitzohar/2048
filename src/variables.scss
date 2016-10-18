@@ -1,0 +1,12 @@
+/**
+ *  Variables
+ **/
+
+
+ $main-color: #1A8CAC;
+ $bg-color: #fefefe;
+
+ $tile-colors: #1A8CAC #51C8CF #FCEAB9 #FC985B #ED5A27;
+ $tile-size: 100px; //the width & height of each tile
+ $tile-margin: 10px; //the margin between each tile
+ $tiles-per-row: 5; //number of tiles per row (and column, since the grid is square). This must match the JS constant "TILES_PER_ROW"
