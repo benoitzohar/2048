@@ -1,0 +1,25 @@
+@import "../variables";
+
+.tile {
+    height: $tile-size;
+    width: $tile-size;
+    position: absolute;
+    border: 1px solid $main-color;
+    @for $x from 0 through $tiles-per-row - 1 {
+         @for $y from 0 through $tiles-per-row - 1{
+            &__#{$x}-#{$y} {
+                left: $tile-margin + ($tile-margin + $tile-size) * $x;
+                top: $tile-margin + ($tile-margin + $tile-size) * $y;
+            }
+        }
+    }
+
+    &-value {
+        display: inline-block;
+        width: 100%;
+        font-size: 20px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: $tile-size;
+    }
+}

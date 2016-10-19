@@ -1,0 +1,10 @@
+@import "../variables";
+
+$grid-size: ($tiles-per-row * ($tile-margin + $tile-size)) + $tile-margin;
+
+.grid {
+    position: relative;
+    background-color: $secondary-color;
+    height: $grid-size;
+    width: $grid-size;
+}
