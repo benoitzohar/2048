@@ -1,7 +1,6 @@
-import GameModel from './game-model'
-
 export default class GameController {
-    constructor(InteractionService) {
+    constructor(GameModel, InteractionService) {
+
         //create the game
         this.game = new GameModel()
 
@@ -14,4 +13,4 @@ export default class GameController {
     }
 }
 
-GameController.$inject = ["InteractionService"];
+GameController.$inject = ["GameModel", "InteractionService"];

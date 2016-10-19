@@ -1,14 +1,16 @@
-import GridModel from '../grid/grid-model'
+class GameModel {
 
-export default class GameModel {
-
-    constructor() {
-        this.grid = new GridModel()
+    constructor(GridModel) {
+        this.grid = GridModel()
 
     }
 
     addRandomTiles(count) {
-        console.log("[debug] count", count);
-        this.grid.addRandomTiles(count);
+        this.grid.addRandomTiles(count)
     }
 }
+
+//This part is necessary to use our model class as a factory
+export default ['GridModel', (GridModel) => {
+    return () => new GameModel(GridModel)
+}]

@@ -9,7 +9,8 @@ import GridComponent from '../grid/grid-component.js';
 import InteractionComponent from '../interaction/interaction-component.js';
 
 export default angular.module('game', [GridComponent.name, InteractionComponent.name])
-    .component("gameComponent", {
+    .factory('GameModel', GameModel)
+    .component('gameComponent', {
         controller: GameController,
         templateUrl: GameTemplate
     });

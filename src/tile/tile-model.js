@@ -1,6 +1,6 @@
-export default class TileModel {
+class TileModel {
 
-    constructor(x = 0, y = 0, value = 2) {
+    constructor(x, y, value) {
         //save positions for the tile
         this.x = x
         this.y = y
@@ -17,4 +17,9 @@ export default class TileModel {
         this.value *= 2
     }
 
+}
+
+//This part is necessary to use our model class as a factory
+export default () => {
+    return (x = 0, y = 0, value = 2) => new TileModel(x, y, value)
 }
