@@ -1,8 +1,26 @@
-<div class="game">
+<section class="game">
+    <header>
+        <h1>2048</h1>
+        <p>
+            Join the numbers and get to the 2048 tile!
+        </p>
+    </header>
     <div>
         score: {{ $ctrl.game.score }}
     </div>
-    <button ng-click="$ctrl.newGame()">New Game</button>
+    <button class="btn" ng-click="$ctrl.newGame()">New Game</button>
     <grid-component grid="$ctrl.game.grid"></grid-component>
-    <button ng-click="$ctrl.addRandomTile()">Add random</button>
-</div>
+    <footer class="footer">
+        <p class="footer-paragraph">
+            <span class="footer-title">HOW TO PLAY:</span> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one</strong>!
+        </p>
+        <hr class="footer-separator" />
+        <p class="footer-paragraph">
+            Created by <a href="https://github.com/benoitzohar">Benoit Zohar</a>. Based on <a href="https://gabrielecirulli.github.io/2048/">2048</a> by <a href="http://gabrielecirulli.com">Gabriele Cirulli.</a> which is based on <a href="https://itunes.apple.com/us/app/1024!/id823499224">1024 by Veewo Studio</a>            and conceptually similar to <a href="http://asherv.com/threes/">Threes by Asher Vollmer.</a>
+        </p>
+        <div class="center">
+            <a class="btn" href="https://github.com/benoitzohar/2048">View this project on GitHub</a>
+        </div>
+
+    </footer>
+</section>

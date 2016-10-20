@@ -15,10 +15,6 @@ export default class GameController {
         this.newGame()
     }
 
-    addRandomTile() {
-        this.game.addRandomTiles(1)
-    }
-
     newGame() {
         //start the game
         this.game.startGame()

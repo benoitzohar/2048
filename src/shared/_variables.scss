@@ -2,14 +2,25 @@
  *  Variables
  **/
 
+// Colors
 $main-color: #1A8CAC;
 $secondary-color: #FCEAB9;
 $bg-color: #fefefe;
 
+// Root font size
+// all the font sizes are set in rem, based on this.
+$font-size: 14px;
+
+// Border radius
 $border-radius: 3px;
+
+// General base animation/transition speed
 $animation-speed: 0.2s;
 
-$tile-colors: #1A8CAC #51C8CF #FCEAB9 #FC985B #ED5A27;
+// Tiles properties
+
+// All the tile colors, starting at 2 and ending at 2048
+$tile-colors: #1A8CAC #51C8CF #FCEAB9 #FC985B #ED5A27; //TODO: add all colors
 $tile-size: 60px; //the width & height of each tile
 $tile-margin: 15px; //the margin between each tile
 $tiles-per-row: 4; //number of tiles per row (and column, since the grid is square). This must match the JS constant "TILES_PER_ROW"

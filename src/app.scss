@@ -1,7 +1,35 @@
 @import "shared/variables";
 
+html {
+    font-size: $font-size;
+}
+
 body {
     background-color: $bg-color;
     color: $main-color;
     font-family: "Quicksand", "Helvetica Neue", sans-serif;
+    padding: 20px;
+}
+
+.btn {
+    color: white;
+    background-color: $main-color;
+    border-radius: $border-radius;
+    border: 1px solid $main-color;
+    padding: 0.3rem 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+        background-color: lighten($main-color, 5%);
+    }
+
+    &:active {
+        background-color: darken($main-color, 5%);
+    }
+}
+
+.center {
+    text-align: center;
 }

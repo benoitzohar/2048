@@ -40,13 +40,11 @@ class GridModel {
      **/
     removeTileFromMap(tile, permanently = false) {
 
-        console.log("[debug] removeTileFromMap", tile);
-
         //remove the  tile from the map
         this.tiles.delete(this.getMapIndexFromPositions(tile.x, tile.y))
 
         if (permanently) {
-            let key = `removed${tile.id}`
+            let key = `removed${tile.$$hashKey}`
 
             //update the tile property
             tile.remove()
@@ -83,7 +81,7 @@ class GridModel {
      *  returns the amount of free slots
      **/
     slotsLeft() {
-        return Math.pow(this.TILES_PER_ROW, 2) - this.tiles.size > 0;
+        return Math.pow(this.TILES_PER_ROW, 2) - this.tiles.size > 0
     }
 
     /**
@@ -98,7 +96,7 @@ class GridModel {
             if (!this.slotsLeft()) {
                 return false
             }
-            let x, y;
+            let x, y
             do {
                 x = _random(0, this.TILES_PER_ROW - 1)
                 y = _random(0, this.TILES_PER_ROW - 1)
@@ -118,8 +116,11 @@ class GridModel {
      *  moves all the "moveable" tiles in the proper direction
      *      axis: 'x' or 'y'
      *      direction : -1 for "negative" move & 1 for "positive" move
+     *  returns new points made by the player move
      **/
     moveTiles(axis, direction) {
+
+        let points = 0
 
         let firstCoord = direction > 0 ? this.TILES_PER_ROW - 1 : 0
         let lastCoord = firstCoord == 0 ? this.TILES_PER_ROW : -1
@@ -143,6 +144,8 @@ class GridModel {
                         if (referenceTile.value === tile.value) {
                             //merge them
                             this.mergeTiles(referenceTile, tile)
+                                //add points
+                            points += tile.value
                         }
                         //otherwise move the tile to the closer position
                         else {
@@ -182,6 +185,7 @@ class GridModel {
 
 
         }
+        return points
     }
 
     moveTile(tile, x, y) {
@@ -217,10 +221,6 @@ class GridModel {
             mergingTile.power()
 
         }
-    }
-
-    getTilesSum() {
-        return _sumBy(Array.from(this.tiles.values()), 'value')
     }
 
     getBiggerTileValue() {

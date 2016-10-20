@@ -7,4 +7,6 @@ $grid-size: ($tiles-per-row * ($tile-margin + $tile-size)) + $tile-margin;
     background-color: $secondary-color;
     height: $grid-size;
     width: $grid-size;
+    margin: $tile-margin * 2 auto;
+    border-radius: $border-radius;
 }

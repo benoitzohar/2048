@@ -1,5 +1,13 @@
 @import "../shared/variables";
 
 .game {
+    width: 500px;
+    margin: 0 auto;
 
+}
+
+.footer {
+    &-title {
+        font-size: bold;
+    }
 }

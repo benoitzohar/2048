@@ -62,14 +62,14 @@ class GameModel {
         //ensure the player is playing
         if (this.state == STATES.INGAME) {
 
-            //move the tiles & merge
-            this.grid.moveTiles(axis, direction)
+            //move the tiles & merge, capture the points
+            let points = this.grid.moveTiles(axis, direction)
 
             //add a random tile
             this.grid.addRandomTiles(1)
 
             //update the general score
-            this.score = this.grid.getTilesSum() //TODO: calculate the score properly
+            this.score += points
 
             //check if we met the target (2048)
             if (this.grid.getBiggerTileValue() == 2048) {
