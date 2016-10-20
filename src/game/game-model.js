@@ -48,10 +48,11 @@ class GameModel {
                 this.move('x', -1)
                 break
             case this.KEYS.RIGHT:
-                this.move('y', 1)
+                this.move('x', 1)
                 break
             case this.KEYS.ENTER:
-                //TODO
+                //restart the game at any moment
+                this.startGame()
                 break
         }
     }
@@ -60,8 +61,12 @@ class GameModel {
 
         //ensure the player is playing
         if (this.state == STATES.INGAME) {
+
             //move the tiles & merge
             this.grid.moveTiles(axis, direction)
+
+            //add a random tile
+            this.grid.addRandomTiles(1)
 
             //update the general score
             this.score = this.grid.getTilesSum() //TODO: calculate the score properly

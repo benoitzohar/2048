@@ -13,6 +13,5 @@ export default angular.module('MapToArrayFilter', [])
     if (!angular.isObject(obj) || !obj.get) {
         return obj
     }
-    console.log("[debug] maptoarray", Array.from(obj.values()));
     return Array.from(obj.values())
 })

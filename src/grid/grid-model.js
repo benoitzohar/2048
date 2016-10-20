@@ -58,6 +58,7 @@ class GridModel {
      *  returns a boolean defining if all the tiles could have been added or not
      **/
     addRandomTiles(count) {
+
         for (let i = 0; i < count; i++) {
 
             if (!this.slotsLeft()) {
@@ -69,7 +70,11 @@ class GridModel {
                 y = _.random(0, this.TILES_PER_ROW - 1)
             } while (!this.slotIsFree(x, y))
 
-            this.createTile(x, y, 2)
+            //get a random value between 2 and 4 but that has 4 times
+            // more chances to be a 2 than 4
+            const value = _.sample([2, 2, 2, 2, 4])
+
+            this.createTile(x, y, value)
         }
         return true
     }
@@ -81,34 +86,77 @@ class GridModel {
      *      direction : -1 for "negative" move & 1 for "positive" move
      **/
     moveTiles(axis, direction) {
-        console.log("[debug] moveTiles", axis, direction);
 
-        let workingAxis = 'x'
-        let firstCoord = 0
-        let lastCoord = 5
-        let processingFactor = 1
+        let firstCoord = direction > 0 ? this.TILES_PER_ROW - 1 : 0
+        let lastCoord = firstCoord == 0 ? this.TILES_PER_ROW : -1
 
-        for (let i = firstCoord; i != lastCoord; i = i + 1 * processingFactor) {
+        for (let i = 0; i < this.TILES_PER_ROW; i++) {
 
             let referenceTile
-            for (let j = firstCoord; j != lastCoord; j = j + 1 * processingFactor) {
-                //console.log("[debug] i,j=", i, j);
+            for (let j = firstCoord; j != lastCoord; j = j + 1 * -direction) {
 
-                let tile = this.getTileAtPosition(i, j)
+                //get actual coordonnates
+                let [curX, curY] = axis == 'x' ? [j, i] : [i, j]
+
+                let tile = this.getTileAtPosition(curX, curY)
+
+                //if we found a tile at the current position
                 if (tile) {
-                    this.moveTile(tile, i, j - 1)
+
+                    //if we already met a tile in this line
+                    if (referenceTile) {
+                        //if the value of the 2 tiles are the same:
+                        if (referenceTile.value === tile.value) {
+                            //merge them
+                            this.mergeTiles(referenceTile, tile)
+                        }
+                        //otherwise move the tile to the closer position
+                        else {
+                            //calculate the new position
+                            let [newX, newY] = [referenceTile.x, referenceTile.y]
+
+                            if (axis == 'x') {
+                                newX -= direction
+                            } else {
+                                newY -= direction
+                            }
+
+                            //actually move the tile
+                            this.moveTile(tile, newX, newY)
+
+                            //save the tile as the reference tile for this line
+                            referenceTile = tile
+                        }
+                    }
+                    //if there is no referenceTile, move it to 0
+                    // -> the moveTile method will take care of making sure
+                    //    there's an actual move to make
+                    else {
+                        let baseValue = direction > 0 ? this.TILES_PER_ROW - 1 : 0
+                        let [newX, newY] = axis == 'x' ? [baseValue, i] : [i, baseValue]
+
+                        //actually move the tile
+                        this.moveTile(tile, newX, newY)
+
+                        //save the tile as the reference tile for this line
+                        referenceTile = tile
+                    }
+
+
                 }
             }
+
+
         }
-
-
     }
 
     moveTile(tile, x, y) {
-        console.log("[debug] moveTile", tile, x, y);
-        //if the tile exists && the destination is free
-        if (tile && _.inRange(x, 0, this.TILES_PER_ROW) && _.inRange(y, 0, this.TILES_PER_ROW) && this.slotIsFree(x, y)) {
 
+        //ensure that we never go off grid
+        const isInRange = _.inRange(x, 0, this.TILES_PER_ROW) && _.inRange(y, 0, this.TILES_PER_ROW)
+
+        //if the tile exists && the destination is free
+        if (tile && (tile.x !== x || tile.y !== y) && isInRange && this.slotIsFree(x, y)) {
             //update the local map
             this.removeTileFromMap(tile)
 
@@ -117,8 +165,6 @@ class GridModel {
 
             //update the local map
             this.addTileToMap(tile)
-
-            console.log("[debug] this.tiles", this.tiles.keys());
 
         }
     }
