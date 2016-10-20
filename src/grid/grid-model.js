@@ -1,10 +1,17 @@
-import _ from 'lodash'
+import _random from 'lodash/random'
+import _sample from 'lodash/sample'
+import _inRange from 'lodash/inRange'
+import _sumBy from 'lodash/sumBy'
+import _sortBy from 'lodash/sortBy'
+import _last from 'lodash/last'
 
 class GridModel {
 
-    constructor(TileModel, TILES_PER_ROW) {
+    constructor(TileModel, TILES_PER_ROW, $timeout) {
         this.TILES_PER_ROW = TILES_PER_ROW
-        this.TileModel = TileModel;
+        this.TileModel = TileModel
+        this.$timeout = $timeout
+
         this.tiles = new Map()
     }
 
@@ -24,8 +31,35 @@ class GridModel {
         this.tiles.set(this.getMapIndexFromPositions(tile.x, tile.y), tile)
     }
 
-    removeTileFromMap(tile) {
+    /**
+     *  removeTileFromMap(TileModel tile, boolean permanently)
+     *  removes a tile from the map
+     *  if permanently is true, removes it visually as well
+     *  in order to apply a css animation to fadeOut, we don't remove it directly
+     *  but store it first in a "removedXX" position
+     **/
+    removeTileFromMap(tile, permanently = false) {
+
+        console.log("[debug] removeTileFromMap", tile);
+
+        //remove the  tile from the map
         this.tiles.delete(this.getMapIndexFromPositions(tile.x, tile.y))
+
+        if (permanently) {
+            let key = `removed${tile.id}`
+
+            //update the tile property
+            tile.remove()
+
+            //add it back to the temporary position
+            this.tiles.set(key, tile)
+
+            this.$timeout(() => {
+                //actually clean it after 1s
+                this.tiles.delete(key)
+            }, 10000)
+        }
+
     }
 
     /**
@@ -66,13 +100,13 @@ class GridModel {
             }
             let x, y;
             do {
-                x = _.random(0, this.TILES_PER_ROW - 1)
-                y = _.random(0, this.TILES_PER_ROW - 1)
+                x = _random(0, this.TILES_PER_ROW - 1)
+                y = _random(0, this.TILES_PER_ROW - 1)
             } while (!this.slotIsFree(x, y))
 
             //get a random value between 2 and 4 but that has 4 times
             // more chances to be a 2 than 4
-            const value = _.sample([2, 2, 2, 2, 4])
+            const value = _sample([2, 2, 2, 2, 4])
 
             this.createTile(x, y, value)
         }
@@ -153,10 +187,11 @@ class GridModel {
     moveTile(tile, x, y) {
 
         //ensure that we never go off grid
-        const isInRange = _.inRange(x, 0, this.TILES_PER_ROW) && _.inRange(y, 0, this.TILES_PER_ROW)
+        const isInRange = _inRange(x, 0, this.TILES_PER_ROW) && _inRange(y, 0, this.TILES_PER_ROW)
 
-        //if the tile exists && the destination is free
+        //if the tile exists, is moving and the destination is free and in range
         if (tile && (tile.x !== x || tile.y !== y) && isInRange && this.slotIsFree(x, y)) {
+
             //update the local map
             this.removeTileFromMap(tile)
 
@@ -171,26 +206,31 @@ class GridModel {
 
     mergeTiles(originTile, mergingTile) {
         if (originTile && mergingTile) {
-            //multiply the value of the original tile
-            originTile.power()
 
-            //delete the mergin tile
-            this.removeTileFromMap(mergingTile)
+            //delete the original tile
+            this.removeTileFromMap(originTile, true)
+
+            //move the mergingTile to at the original tile's position
+            this.moveTile(mergingTile, originTile.x, originTile.y)
+
+            //multiply the value of the mergin tile
+            mergingTile.power()
+
         }
     }
 
     getTilesSum() {
-        return _.sumBy(Array.from(this.tiles.values()), 'value')
+        return _sumBy(Array.from(this.tiles.values()), 'value')
     }
 
     getBiggerTileValue() {
-        return _.last(_.sortBy(Array.from(this.tiles.values()), 'value'))
+        return _last(_sortBy(Array.from(this.tiles.values()), 'value'))
     }
 
 
 }
 
 //This part is necessary to use our model class as a factory
-export default ['TileModel', 'TILES_PER_ROW', (TileModel, TILES_PER_ROW) => {
-    return () => new GridModel(TileModel, TILES_PER_ROW)
+export default ['TileModel', 'TILES_PER_ROW', '$timeout', (TileModel, TILES_PER_ROW, $timeout) => {
+    return () => new GridModel(TileModel, TILES_PER_ROW, $timeout)
 }]

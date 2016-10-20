@@ -1,7 +1,7 @@
-@import "variables";
+@import "shared/variables";
 
- body {
-     background-color: $bg-color;
-     color:  $main-color;
-     font-family: "Quicksand", "Helvetica Neue", sans-serif;
- }
+body {
+    background-color: $bg-color;
+    color: $main-color;
+    font-family: "Quicksand", "Helvetica Neue", sans-serif;
+}

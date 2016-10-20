@@ -1,6 +1,7 @@
 class TileModel {
 
     constructor(x, y, value) {
+
         //save positions for the tile
         this.setCoords(x, y)
 
@@ -19,6 +20,14 @@ class TileModel {
      **/
     power() {
         this.value *= 2
+    }
+
+    /**
+     * remove()
+     * set the "removed" local property to true
+     **/
+    remove() {
+        this.removed = true
     }
 
 }

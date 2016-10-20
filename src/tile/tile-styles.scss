@@ -1,10 +1,19 @@
-@import "../variables";
+@import "../shared/variables";
+@import "../shared/mixins";
 
 .tile {
+
+    position: absolute;
     height: $tile-size;
     width: $tile-size;
-    position: absolute;
-    border: 1px solid $main-color;
+
+    $animations: 'fadeTileIn' $animation-speed*3 1;
+    @include animation($animations);
+    transition: top $animation-speed, left $animation-speed;
+    color: white;
+    border-radius: $border-radius;
+
+    //positions
     @for $x from 0 through $tiles-per-row - 1 {
          @for $y from 0 through $tiles-per-row - 1{
             &__#{$x}-#{$y} {
@@ -14,12 +23,45 @@
         }
     }
 
+    //colors
+    @for $i from 1 through length($tile-colors) {
+        &__color#{powerOfTwo($i)} {
+            border: 1px solid darken(nth($tile-colors, $i), 10%);
+            background-color: nth($tile-colors, $i);
+        }
+    }
+
+    &__removed {
+        opacity: 0;
+        $animations: 'fadeTileOut' $animation-speed*2 1;
+        @include animation($animations);
+    }
+
     &-value {
         display: inline-block;
         width: 100%;
-        font-size: 20px;
+        font-size: 26px;
         text-align: center;
         vertical-align: middle;
         line-height: $tile-size;
+    }
+}
+// Keyframes
+@include keyframes(fadeTileIn) {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+@include keyframes(fadeTileOut) {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
     }
 }

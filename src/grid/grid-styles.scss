@@ -1,4 +1,4 @@
-@import "../variables";
+@import "../shared/variables";
 
 $grid-size: ($tiles-per-row * ($tile-margin + $tile-size)) + $tile-margin;
 

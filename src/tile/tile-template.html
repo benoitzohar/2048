@@ -1,3 +1,3 @@
-<div class="tile tile__{{$ctrl.model.x}}-{{$ctrl.model.y}}" ng-if="$ctrl.model.value">
+<div class="tile tile__{{$ctrl.model.x}}-{{$ctrl.model.y}} tile__color{{$ctrl.model.value}}" ng-class="{'tile__removed': $ctrl.model.removed}" ng-if="$ctrl.model.value">
     <span class="tile-value">{{$ctrl.model.value}}</span>
 </div>
