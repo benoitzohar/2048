@@ -1,4 +1,8 @@
 <div class="game">
+    <div>
+        score: {{ $ctrl.game.score }}
+    </div>
+    <button ng-click="$ctrl.newGame()">New Game</button>
     <grid-component grid="$ctrl.game.grid"></grid-component>
     <button ng-click="$ctrl.addRandomTile()">Add random</button>
 </div>

@@ -1,16 +1,28 @@
 export default class GameController {
-    constructor(GameModel, InteractionService) {
+    constructor(GameModel, InteractionService, $scope) {
 
         //create the game
         this.game = new GameModel()
 
-        //add random tiles to the grid
-        this.game.addRandomTiles(4) //TODO: randomize the defaut amount of tiles
+        //register interactions
+        InteractionService.register((action) => {
+            //apply to the scope because keyboard inputs do not
+            //trigger a digest cycle
+            $scope.$apply(() => this.game.onAction(action))
+        })
+
+        //start the game for the first time
+        this.newGame()
     }
 
     addRandomTile() {
-        this.game.addRandomTiles(1);
+        this.game.addRandomTiles(1)
+    }
+
+    newGame() {
+        //start the game
+        this.game.startGame()
     }
 }
 
-GameController.$inject = ["GameModel", "InteractionService"];
+GameController.$inject = ['GameModel', 'InteractionService', '$scope']

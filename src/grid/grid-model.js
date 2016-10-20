@@ -1,4 +1,4 @@
-import _random from 'lodash/random'
+import _ from 'lodash'
 
 class GridModel {
 
@@ -17,8 +17,15 @@ class GridModel {
     }
 
     createTile(x, y, value) {
-        console.log("[debug] this.TileModel", this.TileModel);
-        this.tiles.set(this.getMapIndexFromPositions(x, y), new this.TileModel(x, y, value))
+        this.addTileToMap(new this.TileModel(x, y, value))
+    }
+
+    addTileToMap(tile) {
+        this.tiles.set(this.getMapIndexFromPositions(tile.x, tile.y), tile)
+    }
+
+    removeTileFromMap(tile) {
+        this.tiles.delete(this.getMapIndexFromPositions(tile.x, tile.y))
     }
 
     /**
@@ -58,8 +65,8 @@ class GridModel {
             }
             let x, y;
             do {
-                x = _random(0, this.TILES_PER_ROW - 1);
-                y = _random(0, this.TILES_PER_ROW - 1);
+                x = _.random(0, this.TILES_PER_ROW - 1)
+                y = _.random(0, this.TILES_PER_ROW - 1)
             } while (!this.slotIsFree(x, y))
 
             this.createTile(x, y, 2)
@@ -67,8 +74,71 @@ class GridModel {
         return true
     }
 
+    /**
+     *  moveTiles(String axis, Int direction)
+     *  moves all the "moveable" tiles in the proper direction
+     *      axis: 'x' or 'y'
+     *      direction : -1 for "negative" move & 1 for "positive" move
+     **/
     moveTiles(axis, direction) {
         console.log("[debug] moveTiles", axis, direction);
+
+        let workingAxis = 'x'
+        let firstCoord = 0
+        let lastCoord = 5
+        let processingFactor = 1
+
+        for (let i = firstCoord; i != lastCoord; i = i + 1 * processingFactor) {
+
+            let referenceTile
+            for (let j = firstCoord; j != lastCoord; j = j + 1 * processingFactor) {
+                //console.log("[debug] i,j=", i, j);
+
+                let tile = this.getTileAtPosition(i, j)
+                if (tile) {
+                    this.moveTile(tile, i, j - 1)
+                }
+            }
+        }
+
+
+    }
+
+    moveTile(tile, x, y) {
+        console.log("[debug] moveTile", tile, x, y);
+        //if the tile exists && the destination is free
+        if (tile && _.inRange(x, 0, this.TILES_PER_ROW) && _.inRange(y, 0, this.TILES_PER_ROW) && this.slotIsFree(x, y)) {
+
+            //update the local map
+            this.removeTileFromMap(tile)
+
+            //update tile infos
+            tile.setCoords(x, y)
+
+            //update the local map
+            this.addTileToMap(tile)
+
+            console.log("[debug] this.tiles", this.tiles.keys());
+
+        }
+    }
+
+    mergeTiles(originTile, mergingTile) {
+        if (originTile && mergingTile) {
+            //multiply the value of the original tile
+            originTile.power()
+
+            //delete the mergin tile
+            this.removeTileFromMap(mergingTile)
+        }
+    }
+
+    getTilesSum() {
+        return _.sumBy(Array.from(this.tiles.values()), 'value')
+    }
+
+    getBiggerTileValue() {
+        return _.last(_.sortBy(Array.from(this.tiles.values()), 'value'))
     }
 
 

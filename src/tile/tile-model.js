@@ -2,11 +2,15 @@ class TileModel {
 
     constructor(x, y, value) {
         //save positions for the tile
-        this.x = x
-        this.y = y
+        this.setCoords(x, y)
 
         //default value is 2
         this.value = value
+    }
+
+    setCoords(x, y) {
+        this.x = x
+        this.y = y
     }
 
     /**
