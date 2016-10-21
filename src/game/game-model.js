@@ -6,19 +6,21 @@ const STATES = {
 
 class GameModel {
 
-    constructor(GridModel, KEYS) {
+    constructor(GridModel, ScoreService, KEYS) {
         this.GridModel = GridModel
         this.KEYS = KEYS
+
+        this.score = ScoreService;
     }
 
     startGame() {
         //init all variables
         this.grid = this.GridModel()
-        this.score = 0
+        this.score.reset()
         this.state = STATES.INGAME
 
         //add 2 random tiles to the grid to start
-        this.addRandomTiles(2)
+        this.grid.addRandomTiles(2)
     }
 
     stopGame(won = false) {
@@ -34,6 +36,13 @@ class GameModel {
             //update the state of the game
             this.state = STATES.LOST
         }
+    }
+
+    isLost() {
+        return this.state == STATES.LOST
+    }
+    isWon() {
+        return this.state == STATES.WON
     }
 
     onAction(action) {
@@ -69,7 +78,7 @@ class GameModel {
             this.grid.addRandomTiles(1)
 
             //update the general score
-            this.score += points
+            this.score.add(points)
 
             //check if we met the target (2048)
             if (this.grid.getBiggerTileValue() == 2048) {
@@ -83,14 +92,11 @@ class GameModel {
 
     }
 
-    addRandomTiles(count) {
-        this.grid.addRandomTiles(count)
-    }
 
 
 }
 
 //This part is necessary to use our model class as a factory
-export default ['GridModel', 'KEYS', (GridModel, KEYS) => {
-    return () => new GameModel(GridModel, KEYS)
+export default ['GridModel', 'ScoreService', 'KEYS', (GridModel, ScoreService, KEYS) => {
+    return () => new GameModel(GridModel, ScoreService, KEYS)
 }]

@@ -1,4 +1,5 @@
 @import "shared/variables";
+@import "shared/mixins";
 
 html {
     font-size: $font-size;
@@ -11,22 +12,40 @@ body {
     padding: 20px;
 }
 
-.btn {
-    color: white;
-    background-color: $main-color;
-    border-radius: $border-radius;
-    border: 1px solid $main-color;
-    padding: 0.3rem 0.5rem;
-    font-size: 1rem;
-    cursor: pointer;
-    text-decoration: none;
+a {
+    color: darken($secondary-color, 24%);
 
     &:hover {
-        background-color: lighten($main-color, 5%);
+        color: darken($secondary-color, 10%);
     }
+}
 
-    &:active {
-        background-color: darken($main-color, 5%);
+//main and secondary button  properties
+$btns: $main-color white '', $secondary-color $main-color '__secondary';
+
+//define all types of buttons
+@each $btn in $btns {
+    $color: nth($btn,1);
+    $font-color: nth($btn,2);
+    $suffix: nth($btn,3);
+
+    .btn#{$suffix} {
+        color: $font-color;
+        background-color: $color;
+        border-radius: $border-radius;
+        border: 1px solid $color;
+        padding: 0.3rem 0.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+        text-decoration: none;
+
+        &:hover {
+            background-color: lighten($color, 5%);
+        }
+
+        &:active {
+            background-color: darken($color, 5%);
+        }
     }
 }
 

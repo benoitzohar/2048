@@ -1,0 +1,30 @@
+@import "../variables";
+
+.modal {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding-left: 10%;
+    padding-right: 10%;
+
+    background-color: transparentize($main-color, 0.15);
+    color: white;
+
+    &-title {
+        text-align: center;
+    }
+
+    &-content {
+        max-width: 500px;
+    }
+
+    &-btn {
+        margin-top: 10px;
+    }
+}

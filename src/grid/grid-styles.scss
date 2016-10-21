@@ -9,4 +9,17 @@ $grid-size: ($tiles-per-row * ($tile-margin + $tile-size)) + $tile-margin;
     width: $grid-size;
     margin: $tile-margin * 2 auto;
     border-radius: $border-radius;
+    padding: 0;
+
+    &-bgelement {
+        display: inline-block;
+        float: left;
+        height: $tile-size - 1.5;
+        width: $tile-size - 1.5;
+        background-color: transparentize(lighten($secondary-color, 20%), 0.7);
+        border-radius: $border-radius;
+        margin-top: $tile-margin;
+        margin-left: $tile-margin;
+        border: 1px solid lighten($secondary-color, 8%);
+    }
 }

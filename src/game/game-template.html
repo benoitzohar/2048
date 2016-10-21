@@ -5,14 +5,13 @@
             Join the numbers and get to the 2048 tile!
         </p>
     </header>
-    <div>
-        score: {{ $ctrl.game.score }}
-    </div>
+    <score-component></score-component>
     <button class="btn" ng-click="$ctrl.newGame()">New Game</button>
     <grid-component grid="$ctrl.game.grid"></grid-component>
     <footer class="footer">
         <p class="footer-paragraph">
             <span class="footer-title">HOW TO PLAY:</span> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one</strong>!
+            <br /> Press <strong>Enter</strong> to start over whenever you want.
         </p>
         <hr class="footer-separator" />
         <p class="footer-paragraph">
@@ -23,4 +22,7 @@
         </div>
 
     </footer>
+
+    <modal-component title="YOU WON !" content="Congratulations ! You made it to 2048 !" action="Click here to start over" action-handler="$ctrl.newGame()" ng-if="$ctrl.game.isWon()"></modal-component>
+    <modal-component title="You lost..." content="Sorry, you did not make it to 2048. Try again now by pressing enter or by clicking on the button below !" action="Click here to try again" action-handler="$ctrl.newGame()" ng-if="$ctrl.game.isLost()"></modal-component>
 </section>

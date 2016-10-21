@@ -1,6 +1,9 @@
 /**
  *  Mixins
  **/
+
+// Power of two function
+// returns a power of 2
 @function powerOfTwo($pow) {
     $res: 1;
     @for $i from 1 through $pow {
@@ -8,6 +11,8 @@
     }
     @return $res;
 }
+
+// Animation mixin
 @mixin animation($animate...) {
     $max: length($animate);
     $animations: '';
@@ -19,6 +24,8 @@
     }
     animation: $animations;
 }
+
+// Keyframes mixin
 @mixin keyframes($animationName) {
      @keyframes #{$animationName}{
         @content;

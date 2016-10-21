@@ -13,6 +13,7 @@ class GridModel {
         this.$timeout = $timeout
 
         this.tiles = new Map()
+        this.removedTiles = 0
     }
 
     /**
@@ -51,11 +52,13 @@ class GridModel {
 
             //add it back to the temporary position
             this.tiles.set(key, tile)
+            this.removedTiles++
 
-            this.$timeout(() => {
-                //actually clean it after 1s
-                this.tiles.delete(key)
-            }, 10000)
+                this.$timeout(() => {
+                    //actually clean it after 1s
+                    this.tiles.delete(key)
+                    this.removedTiles--
+                }, 500)
         }
 
     }
@@ -81,7 +84,7 @@ class GridModel {
      *  returns the amount of free slots
      **/
     slotsLeft() {
-        return Math.pow(this.TILES_PER_ROW, 2) - this.tiles.size > 0
+        return Math.pow(this.TILES_PER_ROW, 2) - this.tiles.size > 0 - this.removedTiles
     }
 
     /**
@@ -90,6 +93,20 @@ class GridModel {
      *  returns a boolean defining if all the tiles could have been added or not
      **/
     addRandomTiles(count) {
+
+        /*if (count === 1) return
+        this.createTile(0, 0, 2)
+        this.createTile(1, 0, 4)
+        this.createTile(2, 0, 8)
+        this.createTile(3, 0, 16)
+        this.createTile(0, 1, 32)
+        this.createTile(1, 1, 64)
+        this.createTile(2, 1, 128)
+        this.createTile(3, 1, 256)
+        this.createTile(0, 2, 512)
+        this.createTile(1, 2, 1024)
+        this.createTile(2, 2, 2048)
+        return*/
 
         for (let i = 0; i < count; i++) {
 
@@ -224,7 +241,7 @@ class GridModel {
     }
 
     getBiggerTileValue() {
-        return _last(_sortBy(Array.from(this.tiles.values()), 'value'))
+        return _last(_sortBy(Array.from(this.tiles.values()), 'value')).value
     }
 
 
