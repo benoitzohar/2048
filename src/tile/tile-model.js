@@ -1,6 +1,12 @@
+import _uniqueId from 'lodash/uniqueId'
+import _toInteger from 'lodash/toInteger'
+
 class TileModel {
 
     constructor(x, y, value) {
+
+        //creates a unique identifier
+        this.id = _toInteger(_uniqueId())
 
         //save positions for the tile
         this.setCoords(x, y)
@@ -20,14 +26,6 @@ class TileModel {
      **/
     power() {
         this.value *= 2
-    }
-
-    /**
-     * remove()
-     * set the "removed" local property to true
-     **/
-    remove() {
-        this.removed = true
     }
 
 }

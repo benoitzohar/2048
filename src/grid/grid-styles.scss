@@ -13,9 +13,10 @@ $grid-size: ($tiles-per-row * ($tile-margin + $tile-size)) + $tile-margin;
 
     &-bgelement {
         display: inline-block;
+        box-sizing: border-box;
         float: left;
-        height: $tile-size - 1.5;
-        width: $tile-size - 1.5;
+        height: $tile-size;
+        width: $tile-size;
         background-color: transparentize(lighten($secondary-color, 20%), 0.7);
         border-radius: $border-radius;
         margin-top: $tile-margin;

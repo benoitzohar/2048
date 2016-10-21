@@ -4,7 +4,6 @@ export default class GridController {
         // (visual purpose only)
         this.completeGrid = new Array(TILES_PER_ROW * TILES_PER_ROW)
     }
-
 }
 
 GridController.$inject = ['TILES_PER_ROW']

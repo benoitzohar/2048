@@ -7,13 +7,11 @@ import _last from 'lodash/last'
 
 class GridModel {
 
-    constructor(TileModel, TILES_PER_ROW, $timeout) {
+    constructor(TileModel, TILES_PER_ROW) {
         this.TILES_PER_ROW = TILES_PER_ROW
         this.TileModel = TileModel
-        this.$timeout = $timeout
 
         this.tiles = new Map()
-        this.removedTiles = 0
     }
 
     /**
@@ -33,34 +31,13 @@ class GridModel {
     }
 
     /**
-     *  removeTileFromMap(TileModel tile, boolean permanently)
+     *  removeTileFromMap(TileModel tile)
      *  removes a tile from the map
-     *  if permanently is true, removes it visually as well
-     *  in order to apply a css animation to fadeOut, we don't remove it directly
-     *  but store it first in a "removedXX" position
      **/
-    removeTileFromMap(tile, permanently = false) {
+    removeTileFromMap(tile) {
 
         //remove the  tile from the map
         this.tiles.delete(this.getMapIndexFromPositions(tile.x, tile.y))
-
-        if (permanently) {
-            let key = `removed${tile.$$hashKey}`
-
-            //update the tile property
-            tile.remove()
-
-            //add it back to the temporary position
-            this.tiles.set(key, tile)
-            this.removedTiles++
-
-                this.$timeout(() => {
-                    //actually clean it after 1s
-                    this.tiles.delete(key)
-                    this.removedTiles--
-                }, 500)
-        }
-
     }
 
     /**
@@ -84,7 +61,7 @@ class GridModel {
      *  returns the amount of free slots
      **/
     slotsLeft() {
-        return Math.pow(this.TILES_PER_ROW, 2) - this.tiles.size > 0 - this.removedTiles
+        return Math.pow(this.TILES_PER_ROW, 2) - this.tiles.size > 0
     }
 
     /**
@@ -93,20 +70,6 @@ class GridModel {
      *  returns a boolean defining if all the tiles could have been added or not
      **/
     addRandomTiles(count) {
-
-        /*if (count === 1) return
-        this.createTile(0, 0, 2)
-        this.createTile(1, 0, 4)
-        this.createTile(2, 0, 8)
-        this.createTile(3, 0, 16)
-        this.createTile(0, 1, 32)
-        this.createTile(1, 1, 64)
-        this.createTile(2, 1, 128)
-        this.createTile(3, 1, 256)
-        this.createTile(0, 2, 512)
-        this.createTile(1, 2, 1024)
-        this.createTile(2, 2, 2048)
-        return*/
 
         for (let i = 0; i < count; i++) {
 
@@ -161,8 +124,12 @@ class GridModel {
                         if (referenceTile.value === tile.value) {
                             //merge them
                             this.mergeTiles(referenceTile, tile)
-                                //add points
+
+                            //add points
                             points += tile.value
+
+                            //save the tile as the reference tile for this line
+                            referenceTile = tile
                         }
                         //otherwise move the tile to the closer position
                         else {
@@ -227,9 +194,8 @@ class GridModel {
 
     mergeTiles(originTile, mergingTile) {
         if (originTile && mergingTile) {
-
             //delete the original tile
-            this.removeTileFromMap(originTile, true)
+            this.removeTileFromMap(originTile)
 
             //move the mergingTile to at the original tile's position
             this.moveTile(mergingTile, originTile.x, originTile.y)
@@ -248,6 +214,6 @@ class GridModel {
 }
 
 //This part is necessary to use our model class as a factory
-export default ['TileModel', 'TILES_PER_ROW', '$timeout', (TileModel, TILES_PER_ROW, $timeout) => {
-    return () => new GridModel(TileModel, TILES_PER_ROW, $timeout)
+export default ['TileModel', 'TILES_PER_ROW', (TileModel, TILES_PER_ROW) => {
+    return () => new GridModel(TileModel, TILES_PER_ROW)
 }]
