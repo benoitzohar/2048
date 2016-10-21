@@ -4,10 +4,35 @@
     width: 500px;
     margin: 0 auto;
 
-}
+    .header {
+        &-title {
+            font-size: 4rem;
+            margin-bottom: 1px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        &-tagline {
+            font-size: 1.4rem;
+            text-align: center;
+        }
+    }
 
-.footer {
-    &-title {
-        font-weight: 700;
+    .toolbar {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+
+        &-scores {
+            flex-basis: 30%;
+        }
+    }
+
+    .footer {
+
+        margin-bottom: 10px;
+
+        &-title {
+            font-weight: 700;
+        }
     }
 }

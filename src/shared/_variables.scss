@@ -5,7 +5,7 @@
 // Colors
 $main-color: #1A8CAC;
 $secondary-color: #FCEAB9;
-$bg-color: #fefefe;
+$bg-color: lighten($secondary-color, 11%);
 
 // Root font size
 // all the font sizes are set in rem, based on this

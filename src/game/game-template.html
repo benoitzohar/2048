@@ -1,12 +1,18 @@
 <section class="game">
-    <header>
-        <h1>2048</h1>
-        <p>
+    <header class="header">
+        <h1 class="header-title">2048</h1>
+        <p class="header-tagline">
             Join the numbers and get to the 2048 tile!
         </p>
     </header>
-    <score-component></score-component>
-    <button class="btn" ng-click="$ctrl.newGame()">New Game</button>
+    <div class="toolbar">
+        <div>
+            <button class="btn" ng-click="$ctrl.newGame()">New Game</button>
+        </div>
+        <div class="toolbar-scores">
+            <score-component></score-component>
+        </div>
+    </div>
     <grid-component grid="$ctrl.game.grid"></grid-component>
     <footer class="footer">
         <p class="footer-paragraph">

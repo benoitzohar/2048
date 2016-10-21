@@ -17,6 +17,7 @@ The game is bundled using webpack and has a low footprint (~ 100Kb minified & gz
 - Every part of the app is an angular component
 - Tests are launched with KarmaJS, Jasmine & PhantomJS (see `karma.cong.js`)
 - I chose not to use a CSS framework, to show my CSS skills & to lower the footprint
+- I wrote components CSS classes as [BEM](http://getbem.com/)
 - The app is compatible with modern browsers
 - The font used is [Quicksand](https://fonts.google.com/specimen/Quicksand) and is loaded from Google font's CDN
 
@@ -37,6 +38,8 @@ Launch in dev mode (requires `webpack-dev-server`) :
 ```
 npm start
 ```
+
+then open `http://localhost:8080/` in your browser or `http://localhost:8080/webpack-dev-server` to have auto-refresh.
 
 Build minified version in `/dist` :
 ```
