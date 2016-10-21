@@ -5,10 +5,14 @@ export default class GameController {
         this.game = new GameModel()
 
         //register interactions
-        InteractionService.register((action) => {
-            //apply to the scope because keyboard inputs do not
-            //trigger a digest cycle
-            $scope.$apply(() => this.game.onAction(action))
+        InteractionService.register((action, fromTouch) => {
+            if (!fromTouch) {
+                //apply to the scope because keyboard inputs do not
+                //trigger a digest cycle
+                $scope.$apply(() => this.game.onAction(action))
+            } else {
+                this.game.onAction(action)
+            }
         })
 
         //start the game for the first time

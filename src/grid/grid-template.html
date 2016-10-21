@@ -1,4 +1,4 @@
-<div class="grid">
+<div class="grid" ng-swipe-left="$ctrl.onSwipe(37)" ng-swipe-up="$ctrl.onSwipe(38)" ng-swipe-right="$ctrl.onSwipe(39)" ng-swipe-down="$ctrl.onSwipe(40)">
     <div class="grid-bgelement" ng-repeat="i in $ctrl.completeGrid track by $index"></div>
     <tile-component model="tile" ng-repeat="tile in $ctrl.grid.tiles | mapToArray track by tile.id"></tile-component>
 </div>

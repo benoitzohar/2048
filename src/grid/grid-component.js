@@ -9,8 +9,9 @@ import GridTemplate from './grid-template.html'
 import GridStyles from './grid-styles.scss'
 
 import TileComponent from '../tile/tile-component.js'
+import InteractionComponent from '../interaction/interaction-component.js'
 
-export default angular.module('grid', [TileComponent.name, MapToArrayFilter.name, ngAnimate])
+export default angular.module('grid', [TileComponent.name, InteractionComponent.name, MapToArrayFilter.name, ngAnimate])
     .factory("GridModel", GridModel)
     .component("gridComponent", {
         bindings: {

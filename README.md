@@ -52,5 +52,5 @@ npm test
 ```
 Launch the tests in TDD watching style :
 ```
-npm test-watch
+npm run test-watch
 ```
